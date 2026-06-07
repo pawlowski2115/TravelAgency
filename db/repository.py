@@ -46,3 +46,13 @@ def delete_trip(trip_id):
     db = get_db()
     db.execute("DELETE FROM trips WHERE id = ?", [trip_id])
     db.commit()
+
+def get_trip_stats():
+    db = get_db()
+    stats = db.execute("""
+        SELECT 
+            COUNT(*) as total_trips,
+            COALESCE(ROUND(AVG(price_pln), 2), 0.00) as avg_price
+        FROM trips
+    """).fetchone()
+    return stats

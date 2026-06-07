@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div style="background-color: #f9f9f9; border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; font-family: monospace;">
+    <strong>STATYSTYKI:</strong><br />
+    Wszystkich ofert w systemie: {{ stats.total_trips if stats.total_trips else 0 }} | 
+    Średnia cena oferta: {{ stats.avg_price if stats.avg_price else 0.00 }} PLN
+</div>
+
 <h2>Nasze Kierunki i Oferty</h2>
 <p><a href="/trips/add"><strong>[+] Dodaj nowy termin wyjazdu</strong></a></p>
 <hr />
@@ -11,7 +17,8 @@
     <p>
         Aktualna pogoda: 
         {% if dest.weather %}
-            {{ dest.weather.temp }}°C (Kod ikony: {{ dest.weather.icon }})
+            {{ dest.weather.temp }}°C 
+            <img src="https://openweathermap.org/img/wn/{{ dest.weather.icon }}.png" alt="pogoda" style="vertical-align: middle; width: 30px;">
         {% else %}
             Brak danych pogodowych
         {% endif %}
@@ -36,7 +43,7 @@
             </thead>
             <tbody>
                 {% for trip in dest.trips %}
-                <tr>
+                <tr class="{% if trip.is_sold_out == 1 %}trip-sold-out{% endif %}">
                     <td>{{ trip.departure_date }} do {{ trip.return_date }}</td>
                     <td>{{ trip.departure_place }}</td>
                     <td><strong>{{ trip.price_pln }} PLN</strong></td>
@@ -50,7 +57,7 @@
                     </td>
                     <td>
                         <form method="POST" action="/web/trips/{{ trip.id }}/toggle" style="display:inline;">
-                            <button type="submit">Przełącz status Sold Out</button>
+                            <button type="submit">Sold Out</button>
                         </form>
                         
                         <a href="/trips/{{ trip.id }}/edit"><button type="button">Edytuj</button></a>
@@ -69,3 +76,10 @@
 {% endfor %}
 
 {% endblock %}
+
+<style>
+    .trip-sold-out {
+        color: #888;
+        background-color: #f9f9f9;
+    }
+</style>

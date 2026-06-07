@@ -25,13 +25,15 @@ seed_db_command_init(app)
 
 @app.route("/", methods=["GET"])
 def index():
+
+    from db.repository import get_trip_stats
+
     destinations = get_all_destinations()
     destinations_data = []
     
     for dest in destinations:
         weather = get_current_weather(dest["weather_city"])
         rate = get_currency_rate(dest["currency_code"])
-        
         trips = get_trips_by_destination(dest["id"])
         
         destinations_data.append({
@@ -42,8 +44,9 @@ def index():
             "exchange_rate_to_pln": rate,
             "trips": trips
         })
-        
-    return render_template("index.html", destinations_data=destinations_data)
+    stats = get_trip_stats()
+
+    return render_template("index.html", destinations_data=destinations_data, stats=stats)
 
 
 @app.route("/trips/add", methods=["GET", "POST"])
