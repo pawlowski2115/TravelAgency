@@ -50,7 +50,7 @@ def init_db_command_init(app):
     @app.cli.command("init-db")
     def init_db_command():
         init_db()
-        print("Baza danych SmartTravel została zainicjalizowana.")
+        print("Baza danych została zainicjalizowana.")
 
 def seed_db_command_init(app):
     @app.cli.command("seed-db")
@@ -62,13 +62,15 @@ def seed_db_command_init(app):
                 ["Włochy", "Rome", "EUR"],
                 ["Hiszpania", "Madrid", "EUR"],
                 ["Japonia", "Tokyo", "JPY"],
-                ["USA", "New York", "USD"]
+                ["USA", "New York", "USD"],
+                ['Grecja', 'Athens', 'EUR'],
+                ['Wielka Brytania', 'London', 'GBP']
             ]
             db.executemany(
                 "INSERT INTO destinations (country_name, weather_city, currency_code) VALUES (?, ?, ?)",
                 default_destinations
             )
             db.commit()
-            print("Dodano podstawowe destynacje (Włochy, Hiszpania, Japonia, USA).")
+            print("Dodano destynacje!")
         else:
             print("Tabela destinations nie jest pusta, pomijam seedowanie.")

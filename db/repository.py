@@ -5,7 +5,7 @@ def get_all_destinations():
     return db.execute("SELECT id, country_name, weather_city, currency_code FROM destinations").fetchall()
 
 def get_destination_by_id(destination_id):
-    db = get_db
+    db = get_db()
     return db.execute("SELECT id, country_name, weather_city, currency_code FROM destinations WHERE id = ?", 
         [destination_id]).fetchone()
 

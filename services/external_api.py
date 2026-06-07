@@ -3,7 +3,6 @@ import requests
 WEATHER_API_KEY = "22e007806268489f3af8430a0d0a3301"
 
 def get_current_weather(city_name):
-    """Pobiera aktualną pogodę z OpenWeatherMap API."""
     try:
         url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={WEATHER_API_KEY}&units=metric"
         

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Nasze Kierunki i Oferty</h2>
+<p><a href="/trips/add"><strong>[+] Dodaj nowy termin wyjazdu</strong></a></p>
+<hr />
+
+{% for dest in destinations_data %}
+    <h3>Kierunek: {{ dest.country_name }} ({{ dest.currency_code }})</h3>
+    
+    <p>
+        Aktualna pogoda: 
+        {% if dest.weather %}
+            {{ dest.weather.temp }}°C (Kod ikony: {{ dest.weather.icon }})
+        {% else %}
+            Brak danych pogodowych
+        {% endif %}
+        <br />
+        Kurs waluty: 1 {{ dest.currency_code }} = {{ "%.4f"|format(dest.exchange_rate_to_pln) }} PLN
+    </p>
+
+    <h4>Dostępne terminy:</h4>
+    {% if dest.trips|length == 0 %}
+        <p><em>Aktualnie brak zaplanowanych terminów.</em></p>
+    {% else %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th>Data od - do</th>
+                    <th>Wylot z</th>
+                    <th>Cena w PLN</th>
+                    <th>Cena w walucie</th>
+                    <th>Status</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in dest.trips %}
+                <tr>
+                    <td>{{ trip.departure_date }} do {{ trip.return_date }}</td>
+                    <td>{{ trip.departure_place }}</td>
+                    <td><strong>{{ trip.price_pln }} PLN</strong></td>
+                    <td>{{ trip.price_local }} {{ dest.currency_code }}</td>
+                    <td>
+                        {% if trip.is_sold_out == 1 %}
+                            <span style="color: red;">[WYPRZEDANE]</span>
+                        {% else %}
+                            <span style="color: green;">Dostępny</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="POST" action="/web/trips/{{ trip.id }}/toggle" style="display:inline;">
+                            <button type="submit">Przełącz status Sold Out</button>
+                        </form>
+                        
+                        <a href="/trips/{{ trip.id }}/edit"><button type="button">Edytuj</button></a>
+                        
+                        <form method="POST" action="/web/trips/{{ trip.id }}/delete" style="display:inline;" onsubmit="return confirm('Usunąć?');">
+                            <button type="submit">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <br />
+    <hr />
+{% endfor %}
+
+{% endblock %}

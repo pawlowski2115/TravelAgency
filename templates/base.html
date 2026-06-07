@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SmartTravel{% endblock %}</title>
+</head>
+<body>
+
+    <header>
+        <h1>Travel Agency</h1>
+        <a href="/">Strona Główna (Katalog)</a> | 
+        <a href="/destinations">Podgląd danych JSON</a>
+        <hr />
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div style="background-color: #e2e2e2; padding: 10px; margin-bottom: 15px;">
+                <strong>Komunikat:</strong>
+                <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <hr />
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>
