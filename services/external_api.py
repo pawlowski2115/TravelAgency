@@ -44,6 +44,7 @@ def get_fallback_rate(currency_code):
     rates = {
         "EUR": 4.30,
         "USD": 4.00,
-        "JPY": 0.026
+        "JPY": 0.026,
+        "GPB": 4.90
     }
     return rates.get(currency_code, 1.0)
