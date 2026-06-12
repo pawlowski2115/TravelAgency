@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Błąd {{ code }} - Travel Agency{% endblock %}
+
+{% block content %}
+<div style="border: 1px solid red; padding: 15px; background-color: #fff5f5; margin-top: 20px; font-family: sans-serif;">
+    <h2 style="color: red; margin-top: 0;">Wystąpił błąd {{ code }}</h2>
+    <p><strong>Komunikat systemowy:</strong> {{ description }}</p>
+    <hr />
+    <p>Co możesz zrobić?</p>
+    <ul>
+        <li><a href="{{ url_for('web.index') }}">Wróć bezpiecznie do strony głównej katalogu</a></li>
+        <li>Upewnij się, że wpisany w przeglądarce adres URL jest poprawny.</li>
+    </ul>
+</div>
+{% endblock %}
